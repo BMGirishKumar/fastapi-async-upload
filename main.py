@@ -1,6 +1,7 @@
 from fastapi import FastAPI,Path, Query
 from typing import Optional
 from pydantic import BaseModel
+from fastapi.responses import HTMLResponse
 
 app=FastAPI()
 
@@ -20,8 +21,11 @@ inventory={
         "Price":399,
         "Brand":"Amul"
     }
-
 }
+@app.get("/",response_class=HTMLResponse)
+def home():
+     return f"<h1> {inventory[1]['Name']} </h1>"   
+
 @app.get("/get-item/{item_id}")
 def get_item(item_id:int=Path(description="The ID of the item you want to view"),gt=0):
      return inventory[item_id]
